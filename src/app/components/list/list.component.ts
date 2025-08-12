@@ -16,7 +16,7 @@ import { MatList } from '@angular/material/list';
 export class ListComponent {
   protected entitiesService = inject(EntitiesService);
 
-  public get entities$$(): Observable<IEntity[]> {
-    return this.entitiesService.entities$;
+  public get entities$(): Observable<IEntity[]> {
+    return this.entitiesService.dispalyEntities$;
   }
 }

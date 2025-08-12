@@ -13,6 +13,6 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class EntityComponent {
   @Input() public data!: IEntity;
-  @Output() public delete = new EventEmitter<number>();
-  @Output() public edit = new EventEmitter<number>();
+  @Output() public delete = new EventEmitter<void>();
+  @Output() public edit = new EventEmitter<void>();
 }

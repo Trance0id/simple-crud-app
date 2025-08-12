@@ -1,8 +1,8 @@
 <div matListItemLine>
-  <button mat-icon-button (click)="edit.emit(data.id)">
+  <button mat-icon-button (click)="edit.emit()">
     <mat-icon fontIcon="edit">Edit</mat-icon>
   </button>
-  <button mat-icon-button (click)="delete.emit(data.id)">
+  <button mat-icon-button (click)="delete.emit()">
     <mat-icon fontIcon="delete">Delete</mat-icon>
   </button>
   {{data.id}}|{{data.name}}|{{data.group}}|{{data.type}}

@@ -1,7 +1,7 @@
-@let entities = entities$$ | async;
+@let entities = entities$ | async;
 <mat-list>
   @for (entity of entities; track entity.id) {
-  <mat-list-item sca-entity [data]="entity" (delete)="this.entitiesService.deleteEntity($event)" (edit)="this.entitiesService.editEntity($event)">
+  <mat-list-item sca-entity [data]="entity" (delete)="this.entitiesService.deleteEntity(entity)" (edit)="this.entitiesService.editEntity(entity)">
   </mat-list-item>
   }
 </mat-list>

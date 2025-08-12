@@ -1,35 +1,46 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { IEntity } from '../types/app.types';
 import { BehaviorSubject, Observable } from 'rxjs';
-
-const mockEntities: IEntity[] = [
-  { id: 1, name: 'Entity1', group: 'Group1', type: 'Type1' },
-  { id: 2, name: 'Entity2', group: 'Group1', type: 'Type2' },
-  { id: 3, name: 'Entity3', group: 'Group1', type: 'Type3' },
-  { id: 4, name: 'Entity4', group: 'Group2', type: 'Type1' },
-  { id: 5, name: 'Entity5', group: 'Group2', type: 'Type2' },
-  { id: 6, name: 'Entity6', group: 'Group2', type: 'Type3' },
-  { id: 7, name: 'Entity7', group: 'Group3', type: 'Type1' },
-  { id: 8, name: 'Entity8', group: 'Group3', type: 'Type2' },
-  { id: 9, name: 'Entity9', group: 'Group3', type: 'Type3' },
-];
+import { StorageService } from './storage.service';
+import { MOCK_ENTITIES } from '../app.mocks';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EntitiesService {
-  private _mockEntities$$ = new BehaviorSubject(mockEntities);
+  private _mockEntities = inject(MOCK_ENTITIES);
+  private _entities$$ = new BehaviorSubject(this._mockEntities);
 
-  public get entities$(): Observable<IEntity[]> {
-    return this._mockEntities$$.asObservable();
+  private _storageService = inject(StorageService);
+
+  constructor() {
+    this._storageService.setStorageSubscriber(this._updateEntities.bind(this));
+    this._entities$$.subscribe(this._storageService.saveEntities.bind(this));
   }
 
-  public deleteEntity(id: number): void {
-    console.log(`delete ${id} clicked!`);
-    this._mockEntities$$.next(this._mockEntities$$.getValue().filter((entity) => entity.id !== id));
+  public get dispalyEntities$(): Observable<IEntity[]> {
+    return this._entities$$.asObservable();
   }
 
-  public editEntity(id: number): void {
-    console.log(`delete ${id} clicked!`);
+  private get _entities(): IEntity[] {
+    return this._entities$$.getValue();
+  }
+
+  private _updateEntities(newEntities: IEntity[]): void {
+    this._entities$$.next(newEntities);
+  }
+
+  public deleteEntity(entitityToDelete: IEntity): void {
+    console.log(`delete ${entitityToDelete.id}!`);
+    this._entities$$.next(this._entities.filter((entity) => entity.id !== entitityToDelete.id));
+    this._storageService.saveEntities(this._entities);
+  }
+
+  public editEntity(entitiy: IEntity): void {
+    console.log(`delete ${entitiy}!`);
+  }
+
+  public addEntity(entitiy: IEntity): void {
+    console.log(`add ${entitiy}!`);
   }
 }
