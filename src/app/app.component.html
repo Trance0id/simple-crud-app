@@ -36,7 +36,8 @@
 
   .content {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
     max-width: 700px;
     margin-bottom: 3rem;
@@ -53,10 +54,8 @@
 
 <main class="main">
   <div class="content">
-    <div class="left-side">
-      <h1>My {{ title }}</h1>
-      <sca-list></sca-list>
-    </div>
+    <h1>My {{ title }}</h1>
+    <div sca-list></div>
   </div>
 </main>
 <router-outlet />

@@ -1,8 +1,7 @@
-<p>list of entities</p>
-<ul>
+@let entities = entities$$ | async;
+<mat-list>
   @for (entity of entities; track entity.id) {
-  <li>
-    {{entity.name}}
-  </li>
+  <mat-list-item sca-entity [data]="entity" (delete)="this.entitiesService.deleteEntity($event)" (edit)="this.entitiesService.editEntity($event)">
+  </mat-list-item>
   }
-</ul>
+</mat-list>
