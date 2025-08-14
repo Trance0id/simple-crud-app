@@ -1,24 +1,25 @@
 import { inject, Injectable } from '@angular/core';
-import { IEntity } from '../types/app.types';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { IEntity, TEntityData, TFilter } from '../components/app/app.types';
+import { BehaviorSubject, combineLatest, map, Observable, Subject, tap } from 'rxjs';
 import { StorageService } from './storage.service';
-import { MOCK_ENTITIES } from '../app.mocks';
+import { MOCK_ENTITIES } from '../components/app/app.mocks';
+import { getRandomId } from '../components/app/app.utils';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EntitiesService {
+  private _storageService = inject(StorageService);
+
   private _mockEntities = inject(MOCK_ENTITIES);
   private _entities$$ = new BehaviorSubject(this._mockEntities);
-
-  private _storageService = inject(StorageService);
 
   constructor() {
     this._storageService.setStorageSubscriber(this._updateEntities.bind(this));
     this._entities$$.subscribe(this._storageService.saveEntities.bind(this));
   }
 
-  public get dispalyEntities$(): Observable<IEntity[]> {
+  public get entities$(): Observable<IEntity[]> {
     return this._entities$$.asObservable();
   }
 
@@ -30,17 +31,16 @@ export class EntitiesService {
     this._entities$$.next(newEntities);
   }
 
-  public deleteEntity(entitityToDelete: IEntity): void {
-    console.log(`delete ${entitityToDelete.id}!`);
-    this._entities$$.next(this._entities.filter((entity) => entity.id !== entitityToDelete.id));
-    this._storageService.saveEntities(this._entities);
+  public deleteEntity(entityId: number): void {
+    this._entities$$.next(this._entities.filter((entity) => entity.id !== entityId));
   }
 
-  public editEntity(entitiy: IEntity): void {
-    console.log(`delete ${entitiy}!`);
+  public editEntity(id: number, entity: TEntityData): void {
+    const index = this._entities.findIndex((entity) => entity.id === id);
+    this._entities$$.next(this._entities.map(origEntity => origEntity.id === id ? { id, ...entity } : origEntity));
   }
 
-  public addEntity(entitiy: IEntity): void {
-    console.log(`add ${entitiy}!`);
+  public addEntity(entity: TEntityData): void {
+    this._entities$$.next([{ id: getRandomId(), ...entity }].concat(this._entities));
   }
 }

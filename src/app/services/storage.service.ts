@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IEntity } from '../types/app.types';
+import { IEntity } from '../components/app/app.types';
 
 @Injectable({
   providedIn: 'root'

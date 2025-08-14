@@ -1,9 +1,16 @@
-<div matListItemLine>
-  <button mat-icon-button (click)="edit.emit()">
+@if (editMode) {
+<div sca-entity-form [entity]="data" formSubmitAction="save" (action)="editMode=false; edit.emit($event)" [formCancelAction]="'clear'" (cancel)="editMode=false"></div>
+} @else {
+<mat-list-item>
+  <button mat-icon-button (click)="editMode=true">
     <mat-icon fontIcon="edit">Edit</mat-icon>
   </button>
   <button mat-icon-button (click)="delete.emit()">
     <mat-icon fontIcon="delete">Delete</mat-icon>
   </button>
-  {{data.id}}|{{data.name}}|{{data.group}}|{{data.type}}
-</div>
+  <span class="item-data">{{data.id}} | {{data.name}} | {{data.group}} | {{data.type}}</span>
+</mat-list-item>
+}
+
+
+<mat-divider></mat-divider>

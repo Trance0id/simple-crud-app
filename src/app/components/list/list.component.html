@@ -1,7 +1,35 @@
-@let entities = entities$ | async;
+@let entities = displayEntities$ | async;
+
+<h3>Entities filter</h3>
+<div class="list-filters">
+  <mat-form-field hintLabel="Filter by name">
+    <mat-label>Name</mat-label>
+    <input matInput [formControl]="nameFilter" placeholder="Type name" />
+  </mat-form-field>
+
+  <mat-form-field hintLabel="Filter by group">
+    <mat-select [formControl]="groupFilter" placeholder="Select group">
+      <mat-option selected value="">all</mat-option>
+      @for (group of filterOptions.group; track group) {
+      <mat-option value="{{group}}">{{group}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field hintLabel="Filter by type">
+    <mat-select [formControl]="typeFilter" placeholder="Select type">
+      <mat-option selected value="">all</mat-option>
+      @for (type of filterOptions.type; track type) {
+      <mat-option value="{{type}}">{{type}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<h3>Entities list</h3>
 <mat-list>
-  @for (entity of entities; track entity.id) {
-  <mat-list-item sca-entity [data]="entity" (delete)="this.entitiesService.deleteEntity(entity)" (edit)="this.entitiesService.editEntity(entity)">
+  @for (entity of entities; track entity) {
+  <mat-list-item sca-entity [data]="entity" (delete)="this.entitiesService.deleteEntity(entity.id)" (edit)="this.entitiesService.editEntity(entity.id, $event)">
   </mat-list-item>
   }
 </mat-list>

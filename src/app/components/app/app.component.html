@@ -1,0 +1,15 @@
+<style>
+
+</style>
+
+<main class="main">
+  <div class="content">
+    <h1>Welcome to {{ title }}</h1>
+    <h2>Add new entity</h2>
+    <div sca-entity-form [entity]="null" [formSubmitAction]="'add'" (action)="entitiesService.addEntity($event)">
+    </div>
+    <h2>Watch entities</h2>
+    <div sca-list></div>
+  </div>
+</main>
+<router-outlet />
