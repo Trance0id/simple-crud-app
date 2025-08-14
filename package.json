@@ -4,9 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build": "ng build --base-href /simple-crud-app/",
+    "deploy": "ng deploy"
   },
   "private": true,
   "dependencies": {

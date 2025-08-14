@@ -99,7 +99,12 @@
           }
         },
         "deploy": {
-          "builder": "angular-cli-ghpages:deploy"
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "repo": "https://github.com/Trance0id/simple-crud-app.git",
+            "branch": "gh-pages",
+            "dir": "dist/simple-crud-app/browser"
+          }
         }
       }
     }
