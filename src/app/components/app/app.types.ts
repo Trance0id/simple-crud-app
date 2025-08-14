@@ -4,6 +4,5 @@ export interface IEntity {
   group: string;
   type: string;
 }
-
 export type TEntityData = Omit<IEntity, 'id'>;
 export type TFilter = Partial<TEntityData>;

@@ -1,18 +1,16 @@
 import { inject, Injectable } from '@angular/core';
-import { IEntity, TEntityData, TFilter } from '../components/app/app.types';
-import { BehaviorSubject, combineLatest, map, Observable, Subject, tap } from 'rxjs';
+import { IEntity, TEntityData } from '../components/app/app.types';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { StorageService } from './storage.service';
-import { MOCK_ENTITIES } from '../components/app/app.mocks';
 import { getRandomId } from '../components/app/app.utils';
+import * as AppMocks from '../components/app/app.mocks';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EntitiesService {
   private _storageService = inject(StorageService);
-
-  private _mockEntities = inject(MOCK_ENTITIES);
-  private _entities$$ = new BehaviorSubject(this._mockEntities);
+  private _entities$$ = new BehaviorSubject(inject(AppMocks.MOCK_ENTITIES));
 
   constructor() {
     this._storageService.setStorageSubscriber(this._updateEntities.bind(this));
@@ -35,9 +33,9 @@ export class EntitiesService {
     this._entities$$.next(this._entities.filter((entity) => entity.id !== entityId));
   }
 
-  public editEntity(id: number, entity: TEntityData): void {
-    const index = this._entities.findIndex((entity) => entity.id === id);
-    this._entities$$.next(this._entities.map(origEntity => origEntity.id === id ? { id, ...entity } : origEntity));
+  public editEntity(id: number, newData: TEntityData): void {
+    const index: number = this._entities.findIndex((entity) => entity.id === id);
+    this._entities$$.next(this._entities.map(entity => entity.id === id ? { id, ...newData } : entity));
   }
 
   public addEntity(entity: TEntityData): void {

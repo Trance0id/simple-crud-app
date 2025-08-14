@@ -10,11 +10,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TFilter } from '../app/app.types';
-import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: '[sca-list]',
-  imports: [AsyncPipe, EntityComponent, MatTableModule, MatList, MatFormFieldModule, FormsModule, MatInputModule, MatSelectModule, ReactiveFormsModule],
+  imports: [AsyncPipe, EntityComponent, MatList, MatFormFieldModule, FormsModule, MatInputModule, MatSelectModule, ReactiveFormsModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,14 +61,12 @@ export class ListComponent {
   }
 
   private _getFilterOptions(entities: IEntity[]): void {
-    // if (!entities) return;
-
     this.filterOptions = { group: new Set(), type: new Set() };
 
     entities.forEach(entity => {
       Object.entries(this.filterOptions)
-        .forEach(([key, value]) => {
-          value.add(entity[key as keyof TFilter]);
+        .forEach(([filterKey, options]) => {
+          options.add(entity[filterKey as keyof TFilter]);
         });
     });
   }

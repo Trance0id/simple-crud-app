@@ -8,7 +8,6 @@ import { IEntity } from '../app/app.types';
 import { MatIcon } from '@angular/material/icon';
 import { EntitiesService } from '../../services/entities.service';
 
-
 @Component({
   selector: '[sca-entity-form]',
   imports: [FormsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatButtonModule, MatIcon],
