@@ -10,9 +10,10 @@ import * as AppMocks from '../components/app/app.mocks';
 })
 export class EntitiesService {
   private _storageService = inject(StorageService);
-  private _entities$$ = new BehaviorSubject(inject(AppMocks.MOCK_ENTITIES));
+  private _entities$$: BehaviorSubject<IEntity[]>;
 
   constructor() {
+    this._entities$$ = new BehaviorSubject(this._storageService.checkForExistingEntities() ?? inject(AppMocks.MOCK_ENTITIES))
     this._storageService.setStorageSubscriber(this._updateEntities.bind(this));
     this._entities$$.subscribe(this._storageService.saveEntities.bind(this));
   }
@@ -30,15 +31,15 @@ export class EntitiesService {
   }
 
   public deleteEntity(entityId: number): void {
-    this._entities$$.next(this._entities.filter((entity) => entity.id !== entityId));
+    this._updateEntities(this._entities.filter((entity) => entity.id !== entityId));
   }
 
   public editEntity(id: number, newData: TEntityData): void {
     const index: number = this._entities.findIndex((entity) => entity.id === id);
-    this._entities$$.next(this._entities.map(entity => entity.id === id ? { id, ...newData } : entity));
+    this._updateEntities(this._entities.map(entity => entity.id === id ? { id, ...newData } : entity));
   }
 
   public addEntity(entity: TEntityData): void {
-    this._entities$$.next([{ id: getRandomId(), ...entity }].concat(this._entities));
+    this._updateEntities([{ id: getRandomId(), ...entity }].concat(this._entities));
   }
 }

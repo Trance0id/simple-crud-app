@@ -16,4 +16,9 @@ export class StorageService {
   public saveEntities(entitities: IEntity[]): void {
     localStorage.setItem('entities', JSON.stringify(entitities));
   }
+
+  public checkForExistingEntities(): IEntity[] | null {
+    const storageItems = localStorage.getItem('entities');
+    return storageItems ? JSON.parse(storageItems) : null;
+  }
 }
